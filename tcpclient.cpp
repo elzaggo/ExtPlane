@@ -124,6 +124,21 @@ void TcpClient::readClient() {
             } else {
                 INFO << "Invalid set command";
             }
+        } else if(command == "inc") {
+            if(subLine.size() == 3) {
+                QString refName = subLine.value(1);
+                QString deltaValue = subLine.value(2).trimmed();
+                DataRef *ref = getSubscribedRef(refName);
+                if (ref) {
+                    if(ref->isWritable()) {
+                        ref->incValue(deltaValue);
+                    } else {
+                        INFO << "Ref " << ref->name() << " is not writable!";
+                    }
+                }
+            } else {
+                INFO << "Invalid inc command";
+            }
         } else if(command == "key") {
             if(subLine.size() == 2) {
                 bool ok;
