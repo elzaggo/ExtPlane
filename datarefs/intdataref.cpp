@@ -30,6 +30,17 @@ void IntDataRef::setValue(int newValue) {
     emit changed(this);
 }
 
+void IntDataRef::incValue(int deltaValue) {
+    if(!isWritable()) {
+        INFO << "Tried to write read-only dataref" << name();
+        return;
+    }
+    DEBUG << name() << deltaValue;
+    _value += deltaValue;
+    XPLMSetDatai(ref(), _value);
+    emit changed(this);
+}
+
 QString IntDataRef::valueString() {
     return QString::number(value());
 }
@@ -41,5 +52,15 @@ void IntDataRef::setValue(QString &newValue) {
         setValue(value);
     } else {
         INFO << "Cannot set value " << newValue;
+    }
+}
+
+void IntDataRef::incValue(QString &deltaValue) {
+    bool ok = false;
+    int value = deltaValue.toInt(&ok);
+    if(ok) {
+        incValue(value);
+    } else {
+        INFO << "Cannot inc value by " << deltaValue;
     }
 }
