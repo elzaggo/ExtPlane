@@ -22,6 +22,7 @@ public:
     bool isWritable();
     virtual QString valueString() = 0;
     virtual void setValue(QString &newValue) = 0;
+    virtual void incValue(QString &deltaValue) = 0;
     XPLMDataTypeID type(); // NOTE: always only one type, although XPLMDataTypeID can have many.
     QString typeString();
     virtual void setAccuracy(double val);

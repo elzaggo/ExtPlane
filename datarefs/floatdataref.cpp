@@ -28,6 +28,16 @@ void FloatDataRef::setValue(float newValue) {
     emit changed(this);
 }
 
+void FloatDataRef::incValue(float deltaValue) {
+    if(!isWritable()) {
+        INFO << "Tried to write read-only dataref" << name();
+        return;
+    }
+    _value += deltaValue;
+    XPLMSetDataf(ref(), _value);
+    emit changed(this);
+}
+
 QString FloatDataRef::valueString() {
     return QString::number(value(), 'g', 10);
 }
@@ -39,5 +49,15 @@ void FloatDataRef::setValue(QString &newValue) {
         setValue(value);
     } else {
         INFO << "Cannot set value " << newValue;
+    }
+}
+
+void FloatDataRef::incValue(QString &deltaValue) {
+    bool ok = false;
+    float value = deltaValue.toFloat(&ok);
+    if(ok) {
+        incValue(value);
+    } else {
+        INFO << "Cannot increment with value " << deltaValue;
     }
 }

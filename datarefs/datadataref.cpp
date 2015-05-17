@@ -61,3 +61,7 @@ void DataDataRef::setValue(QString &newValue) {
     QByteArray valueBA = newValue.toUtf8();
     setValue(valueBA);
 }
+
+void DataDataRef::incValue(QString &deltaValue) {
+    qFatal("Incrementing Data DataRefs is not supported");
+}

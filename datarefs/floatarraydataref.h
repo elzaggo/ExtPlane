@@ -22,6 +22,7 @@ public:
     virtual void updateValue();
     virtual QString valueString();
     virtual void setValue(QString &newValue);
+    virtual void incValue(QString &deltaValue);
 private:
     QVector<float> _values; // Actual values in a vector
     int _length; // Length of dataref, as given by X-Plane

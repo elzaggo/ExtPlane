@@ -79,3 +79,32 @@ void FloatArrayDataRef::setValue(QString &newValue) {
     XPLMSetDatavf(_ref, _valueArray, 0, numberOfValuesToWrite);
     emit changed(this);
 }
+
+void FloatArrayDataRef::incValue(QString &newValue) {
+
+    // Check that value starts with [ and ends with ]
+    if(!newValue.startsWith('[') || !newValue.endsWith(']')) {
+        INFO << "Invalid array value";
+        return;
+    }
+
+    // Remove [] and split values
+    QString arrayString = newValue.mid(1, newValue.length() - 2);
+    QStringList values = arrayString.split(',');
+
+    // Limit number of values to write to ref length or number of given values
+    int numberOfValuesToWrite = qMin(_length, values.size());
+
+    // Convert values to float and copy to _valueArray
+    for(int i=0;i<numberOfValuesToWrite;i++) {
+        bool ok = true;
+        float value = values[i].toFloat(&ok);
+        if(!ok) {
+            INFO << "Invalid value " << values[i] << "in array";
+            return;
+        }
+        _valueArray[i] += value;
+    }
+    XPLMSetDatavf(_ref, _valueArray, 0, numberOfValuesToWrite);
+    emit changed(this);
+}

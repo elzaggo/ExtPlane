@@ -29,7 +29,9 @@ class CmdProcessor(object):
     def help(self):
         return """
         sub hg sim/cockpit2/gauges/actuators/barometer_setting_in_hg_pilot 1
-        set hg 29\n"""
+        set hg 29
+        inc hg -2
+        \n"""
 
     def parse(self, line):
         parts = line.split()
@@ -42,6 +44,9 @@ class CmdProcessor(object):
         elif cmd  == 'set' and len(args) == 2:
             ref, value = (self.refs[args[0]])[0], args[1]
             return ['set {} {}'.format(ref, value)]
+        elif cmd  == 'inc' and len(args) == 2:
+            ref, value = (self.refs[args[0]])[0], args[1]
+            return ['inc {} {}'.format(ref, value)]
         else:
             raise ValueError()
 
